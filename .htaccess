@@ -1,0 +1,63 @@
+# позволить выполнять php в html страницах
+RemoveHandler .html .htm
+AddType application/x-httpd-php .php .htm .html .phtml
+
+# включаем мод реврайт
+Options Multiviews
+
+# включаем мод реврайт
+Options +Followsymlinks
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^adalt\.ru$ [NC]
+RewriteRule ^(.*)$ http://www.adalt.ru/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^adalt\.vt$ [NC]
+RewriteRule ^(.*)$ http://www.adalt.vt/$1 [R=301,L]
+
+# базовая дирректория это корень сайта
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.* - [L,QSA]
+
+# меняем расширение всех страниц
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^/]+)/?\.html$ /?page=$1 [L]
+
+
+
+
+# искусственно увеличим количество страниц
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/?$ /?page=$1 [L]
+
+
+
+
+# пагинация страниц
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/list_([0-9]+)\.html?$ /?page=$1&p=$2 [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/user_([0-9]+)\.html?$ /?page=$1&id=$2 [L]
+
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/news_([0-9]+)\.html?$ /?page=$1&news_id=$2 [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/content_([0-9]+)\.html?$ /?page=$1&content_id=$2 [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/user_([0-9]+)/list_([0-9]+)\.html?$ /?page=$1&id=$2&c=$3 [L]
+
+
+RewriteRule ^admin_fieldeditor/([0-9]+)\.html?$ /?page=admin_fieldeditor&prefs_field_id=$1 [L]
+RewriteRule ^admin_sectioneditor/([0-9]+)\.html?$ /?page=admin_sectioneditor&fields_section_id=$1 [L]
+RewriteRule ^admin_optionseditor/([0-9]+)\.html?$ /?page=admin_optionseditor&option_id=$1 [L]
+
+
+
